@@ -3,9 +3,9 @@ package ar.com.clovinn.test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -25,8 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
+
 import ar.com.clovinn.test.controller.ProductController;
 import ar.com.clovinn.test.dto.ProductDto;
 import ar.com.clovinn.test.exception.ClovinnTestException;
@@ -43,7 +42,40 @@ public class ProductControllerIntegrationTest {
 
 	@MockBean
 	private ProductService service;
+	
+	@Test
+	public void getProductOkTest() throws Exception {
 
+		Product productTest = new Product("Test", "TestType", "TestDescription", 100);
+
+
+		productTest.setId(100);
+		given(service.one(any(Long.class))).willReturn(productTest);
+
+		
+		
+		mvc.perform(get("/product/1")
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is(productTest.getName())));
+		
+	}
+	
+	
+	
+	@Test
+	public void getProductErrorTest() throws Exception {
+
+		when(service.one(any(Long.class))).thenThrow(new DataNotFoundException("Test Error"));
+
+
+		// when
+		MockHttpServletResponse response = mvc.perform(
+				get("/product/1")
+				.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		assertEquals( HttpStatus.NOT_FOUND.value(), response.getStatus());
+	}
 	
 	@Test
 	public void createErrorValidationTest() throws Exception {
