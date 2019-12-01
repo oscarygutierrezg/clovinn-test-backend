@@ -30,7 +30,7 @@ public class ProductService {
 	/**
 	 * Este método crear un nuevo producto.
 	 * @param p Producto a crear
-	 * @return 
+	 * @return Producto a creado
 	 */
 	public Product create(final Product p) {
 		return productRepository.save(p);
@@ -39,7 +39,7 @@ public class ProductService {
 	/**
 	 * Este método modifica un producto.
 	 * @param p Producto a modificar
-	 * @return 
+	 * @return Producto a actualizado
 	 */
 	public Product update(final Product p) {
 		return productRepository.saveAndFlush(p);
@@ -55,7 +55,7 @@ public class ProductService {
 
 	/**
 	 * Este método obtiene todos los productos guardados.
-	 * @return List<Product>
+	 * @return List<Product> Lista de productos
 	 * @see List
 	 * @see Product
 	 */
@@ -67,7 +67,7 @@ public class ProductService {
 	/**
 	 * Este método obtiene un producto dado el  id.
 	 * @param id del producto a buscar
-	 * @return Product
+	 * @return Product Producto consultado
 	 * @throws En caso que el id no este registrado
 	 * @see Product
 	 */

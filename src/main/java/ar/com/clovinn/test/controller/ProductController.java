@@ -25,7 +25,7 @@ import ar.com.clovinn.test.services.ProductService;
 
 
 /**
- * La clase ProductController se encarga de exponer la capa de servicios osociados a la entidad Product.
+ * La clase ProductController se encarga de exponer la capa de servicios asociados a la entidad Product.
  *
  * @author  Oscar Gutiérrez
  * @version 1.0
@@ -42,6 +42,13 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	/**
+	 * Servicio de creación un nuevo producto.
+	 * @param product Información del producto a crear
+	 * @return  Producto a creado
+	 * @see ProductDto
+	 * @see Product
+	 */
 	@PostMapping
 	public Product create(@Valid @RequestBody ProductDto product) {
 		LOGGER.info(product.toString());
@@ -56,6 +63,13 @@ public class ProductController {
 		}
 	}
 
+	/**
+	 * Servicio de actualización un nuevo producto.
+	 * @param product Información del producto a actualizar
+	 * @return  Producto a actualizado
+	 * @see ProductDto
+	 * @see Product
+	 */
 	@PutMapping
 	public Product update(@Valid @RequestBody ProductDto product) {
 		LOGGER.info(product.toString());
@@ -70,6 +84,13 @@ public class ProductController {
 		}
 	}
 
+	
+	/**
+	 * Servicio de consulta sobre todos los productos.
+	 * @return List<Product> Lista de productos
+	 * @see List
+	 * @see Product
+	 */
 	@GetMapping("/all")
 	public List<Product> findAll() {
 		try{
@@ -80,6 +101,12 @@ public class ProductController {
 		}
 	}
 
+	/**
+	 * Servicio de consulta un producto dado un id.
+	 * @param id del producto a consultar
+	 * @return Product Producto consultado
+	 * @see Product
+	 */
 	@GetMapping("/{id}")
 	Product one(@PathVariable Long id) {
 		try{
