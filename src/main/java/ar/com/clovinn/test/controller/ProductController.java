@@ -2,23 +2,20 @@ package ar.com.clovinn.test.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.google.common.base.Preconditions;
 
 import ar.com.clovinn.test.dto.ProductDto;
 import ar.com.clovinn.test.exception.ClovinnTestException;
@@ -47,8 +44,10 @@ public class ProductController {
 
 	@PostMapping
 	public Product create(@Valid @RequestBody ProductDto product) {
+		LOGGER.info(product.toString());
 		try{
 			Product p = new Product(product); 
+			LOGGER.info(p.toString());
 			return productService.create(p);
 		} catch (ClovinnTestException e) {
 			LOGGER.error(e.getMessage(),e);
@@ -56,11 +55,13 @@ public class ProductController {
 					HttpStatus.PRECONDITION_REQUIRED, "Product Can Not Create", e);
 		}
 	}
-	
+
 	@PutMapping
 	public Product update(@Valid @RequestBody ProductDto product) {
+		LOGGER.info(product.toString());
 		try{
-			Product p = new Product(product);
+			Product p = new Product(product); 
+			LOGGER.info(p.toString());
 			return productService.update(p);
 		} catch (ClovinnTestException e) {
 			LOGGER.error(e.getMessage(),e);
@@ -73,6 +74,16 @@ public class ProductController {
 	public List<Product> findAll() {
 		try{
 			return  productService.findAll();
+		} catch (DataNotFoundException e){
+			throw new ResponseStatusException(
+					HttpStatus.NOT_FOUND, "Product Not Found", e);
+		}
+	}
+
+	@GetMapping("/{id}")
+	Product one(@PathVariable Long id) {
+		try{
+			return   productService.one(id);
 		} catch (DataNotFoundException e){
 			throw new ResponseStatusException(
 					HttpStatus.NOT_FOUND, "Product Not Found", e);

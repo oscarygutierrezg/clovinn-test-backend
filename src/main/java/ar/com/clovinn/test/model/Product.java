@@ -43,6 +43,7 @@ public class Product {
 
 
 	public Product(ProductDto productDto) {
+		id = productDto.getId();
 	  	name=productDto.getName();
     	type=productDto.getType();
     	description=productDto.getDescription();
@@ -78,6 +79,14 @@ public class Product {
 	}
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", type=" + type + ", description=" + description
+				+ ", quantity=" + quantity + "]";
 	}
 	
 	

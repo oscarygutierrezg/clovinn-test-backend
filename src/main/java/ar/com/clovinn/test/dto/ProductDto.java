@@ -69,6 +69,12 @@ public class ProductDto {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+
+	@Override
+	public String toString() {
+		return "ProductDto [id=" + id + ", name=" + name + ", type=" + type + ", description=" + description
+				+ ", quantity=" + quantity + "]";
+	}
 	
 	
 	
